@@ -8,7 +8,9 @@ const {
     DATABASE_PORT,
     DATABASE_USERNAME,
     DATABASE_PASSWORD,
-    DATABASE_NAME
+    DATABASE_NAME,
+    DATABASE_TEST_NAME,
+    NODE_ENV
 } = process.env;
 
 module.exports = {
@@ -17,7 +19,9 @@ module.exports = {
     "port": DATABASE_PORT,
     "username": DATABASE_USERNAME,
     "password": DATABASE_PASSWORD,
-    "database": DATABASE_NAME,
+    "database": NODE_ENV !== "test" ? DATABASE_NAME : DATABASE_TEST_NAME,
+    "migrationsRun": NODE_ENV === "test",
+    "dropSchema": NODE_ENV === "test",
     "synchronize": false,
     "migrations": ["src/database/migrations/*.ts"],
     "entities": ["src/entities/*.ts"],
