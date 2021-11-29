@@ -5,9 +5,10 @@ export default class DeleteAddressController {
 
     public static async handle(req: Request, res: Response) {
         const { addressId } = req.params;
+        const { user_id } = req;
 
         try {
-            await DeleteAddressService.execute(addressId);
+            await DeleteAddressService.execute(addressId, user_id);
 
             return res.send({ message: 'Success' });
 

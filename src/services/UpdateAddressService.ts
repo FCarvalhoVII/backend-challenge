@@ -11,10 +11,16 @@ interface IUpdateRequestBody {
 
 export default class UpdateAddressService {
 
-    public static async execute(addressId: string, requestBody: IUpdateRequestBody) {
+    public static async execute(addressId: string, user_id: string, requestBody: IUpdateRequestBody) {
         const addressRepositories = getCustomRepository(AddressRepositories);
 
         const updateObject = new UpdateObject(requestBody);
+
+        const address = await addressRepositories.findOne(addressId);
+
+        if (address.user_id !== parseInt(user_id)) {
+            throw new Error('Unauthorized update');
+        }
 
         await addressRepositories.update(addressId, updateObject);
 

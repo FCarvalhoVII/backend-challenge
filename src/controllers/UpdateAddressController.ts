@@ -5,10 +5,11 @@ export default class UpdateAddressController {
 
     public static async handle(req: Request, res: Response) {
         const { addressId } = req.params;
+        const { user_id } = req;
         const { address, neighborhood, number, city } = req.body;
 
         try {
-            const addressUpdated = await UpdateAddressService.execute(addressId, {
+            const addressUpdated = await UpdateAddressService.execute(addressId, user_id, {
                 address,
                 neighborhood,
                 number,

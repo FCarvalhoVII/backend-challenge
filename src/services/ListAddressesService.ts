@@ -8,9 +8,14 @@ export default class ListAddressesService {
         const addressRepositories = getCustomRepository(AddressRepositories);
 
         if (addressId) {
-            const address = await addressRepositories.findOne(addressId);
+            const address = await addressRepositories.find({
+                where: {
+                    id: addressId,
+                    user_id
+                }
+            });
 
-            return address;
+            return address[0];
         }
 
         const searchParams = new SearchParams(queryParams, user_id);
