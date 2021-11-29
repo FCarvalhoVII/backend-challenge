@@ -1,0 +1,667 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Projeto de avaliação técnica Backend",
+        "description": "API em Express escrita em TypeScript, com cadastro e controle de usuários.",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:3333/",
+            "description": "API local PORT: 3333"
+        }
+    ],
+    "paths": {
+        "/register": {
+            "post": {
+                "summary": "Cadastro de usuário",
+                "description": "Essa rota é responsável pelo registro de um novo usuário",
+                "tags": ["Users"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#components/schemas/User"
+                            },
+                            "examples": {
+                                "user": {
+                                    "value": {
+                                        "name": "John Doe",
+                                        "email": "johndoe@email.com",
+                                        "password": "123456"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "500": {
+                        "description": "Unexpected Error"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "format": "int64",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "John Doe"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "johndoe@email.com"
+                                        },
+                                        "created_at": {
+                                            "type": "Date",
+                                            "example": "2021-11-28T18:17:37.000Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "Date",
+                                            "example": "2021-11-28T18:17:37.000Z"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "summary": "Login",
+                "description": "Essa rota é responsável pelo login do usuário",
+                "tags": ["Users"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "examples": {
+                                "user": {
+                                    "value": {
+                                        "email": "johndoe@email.com",
+                                        "password": "123456"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "500": {
+                        "description": "Unexpected Error"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "token": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/update": {
+            "put": {
+                "summary": "Alterar dados do usuário",
+                "description": "Essa rota é responsável pela alteração de dados do usuário",
+                "tags": ["Users"],
+                "security": [{ "bearerAuth": [] }],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "examples": {
+                                "user": {
+                                    "value": {
+                                        "name": "John S. Doe"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "500": {
+                        "description": "Unexpected Error"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "type": "string",
+                                            "example": "John S. Doe"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "johndoe@email.com"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user": {
+            "delete": {
+                "summary": "Remover usuário do sistema",
+                "description": "Essa rota é responsável pela remoção de um usuário do sistema",
+                "tags": ["Users"],
+                "security": [{ "bearerAuth": [] }],
+                "responses": {
+                    "500": {
+                        "description": "Unexpected Error"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "summary": "Listar dados do usuário",
+                "description": "Essa rota é responsável por listar os dados do usuário",
+                "tags": ["Users"],
+                "security": [{ "bearerAuth": [] }],
+                "responses": {
+                    "500": {
+                        "description": "Unexpected Error"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "type": "string",
+                                            "example": "John S. Doe"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "johndoe@email.com"
+                                        },
+                                        "address": {
+                                            "type": "Array",
+                                            "example": []
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/address": {
+            "post": {
+                "summary": "Cadastro de endereço",
+                "description": "Essa rota é responsável pelo registro de um novo endereço para o usuário",
+                "tags": ["Addresses"],
+                "security": [{ "bearerAuth": [] }],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#components/schemas/Address"
+                            },
+                            "examples": {
+                                "address": {
+                                    "value": {
+                                        "address": "Av. Exemplo",
+                                        "number": "78, ap: 101",
+                                        "neighborhood": "Bairro",
+                                        "city": "Cidade"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "500": {
+                        "description": "Unexpected Error"
+                    },
+                    "401": {
+                        "description":"Unauthorized"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "format": "int64",
+                                            "example": 1
+                                        },
+                                        "user_id": {
+                                            "type": "integer",
+                                            "format": "int64",
+                                            "example": 1
+                                        },
+                                        "address": {
+                                            "type": "string",
+                                            "example": "Av. Exemplo"
+                                        },
+                                        "number": {
+                                            "type": "string",
+                                            "example": "78, ap: 101"
+                                        },
+                                        "neighborhood": {
+                                            "type": "string",
+                                            "example": "Bairro"
+                                        },
+                                        "city": {
+                                            "type": "string",
+                                            "example": "Cidade"
+                                        },
+                                        "created_at": {
+                                            "type": "Date",
+                                            "example": "2021-11-28T18:17:37.000Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "Date",
+                                            "example": "2021-11-28T18:17:37.000Z"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "summary": "Listar os endereços do usuário",
+                "description": "Essa rota é responsável por listar e filtrar os endereços do usuário",
+                "tags": ["Addresses"],
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    {
+                        "name": "city",
+                        "in": "query",
+                        "description": "Filtro de cidade",
+                        "required": false
+                    },
+                    {
+                        "name": "neighborhood",
+                        "in": "query",
+                        "description": "Filtro de bairro",
+                        "required": false
+                    }
+                ],
+                "responses": {
+                    "500": {
+                        "description": "Unexpected Error"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "addresses": {
+                                            "type": "array",
+                                            "example": [
+                                                {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "format": "int64",
+                                                        "example": 1
+                                                    },
+                                                    "user_id": {
+                                                        "type": "integer",
+                                                        "format": "int64",
+                                                        "example": 1
+                                                    },
+                                                    "address": {
+                                                        "type": "string",
+                                                        "example": "Av. Exemplo"
+                                                    },
+                                                    "number": {
+                                                        "type": "string",
+                                                        "example": "78, ap: 101"
+                                                    },
+                                                    "neighborhood": {
+                                                        "type": "string",
+                                                        "example": "Bairro"
+                                                    },
+                                                    "city": {
+                                                        "type": "string",
+                                                        "example": "Cidade"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "Date",
+                                                        "example": "2021-11-28T18:17:37.000Z"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "Date",
+                                                        "example": "2021-11-28T18:17:37.000Z"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/address/{addressId}": {
+            "get": {
+                "summary": "Listar um endereço do usuário",
+                "description": "Essa rota é responsável por listar um endereço específico do usuário",
+                "tags": ["Addresses"],
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    {
+                        "name": "addressId",
+                        "in": "path",
+                        "description": "ID do endereço que deseja listar",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "500": {
+                        "description": "Unexpected Error"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "addresses": {
+                                            "type": "object",
+                                            "example": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "format": "int64",
+                                                    "example": 1
+                                                },
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "format": "int64",
+                                                    "example": 1
+                                                },
+                                                "address": {
+                                                    "type": "string",
+                                                    "example": "Av. Exemplo"
+                                                },
+                                                "number": {
+                                                    "type": "string",
+                                                    "example": "78, ap: 101"
+                                                },
+                                                "neighborhood": {
+                                                    "type": "string",
+                                                    "example": "Bairro"
+                                                },
+                                                "city": {
+                                                    "type": "string",
+                                                    "example": "Cidade"
+                                                },
+                                                "created_at": {
+                                                    "type": "Date",
+                                                    "example": "2021-11-28T18:17:37.000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "Date",
+                                                    "example": "2021-11-28T18:17:37.000Z"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "summary": "Editar um endereço do usuário",
+                "description": "Essa rota é responsável por editar um endereço do usuário",
+                "tags": ["Addresses"],
+                "security": [{ "bearerAuth": [] }],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#components/schemas/Address"
+                            },
+                            "examples": {
+                                "address": {
+                                    "value": {
+                                        "address": "Av. Exemplo",
+                                        "number": "78, ap: 101",
+                                        "neighborhood": "Bairro",
+                                        "city": "Cidade"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "addressId",
+                        "in": "path",
+                        "description": "ID do endereço que deseja editar",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "500": {
+                        "description": "Unexpected Error"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "addresses": {
+                                            "type": "object",
+                                            "example": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "format": "int64",
+                                                    "example": 1
+                                                },
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "format": "int64",
+                                                    "example": 1
+                                                },
+                                                "address": {
+                                                    "type": "string",
+                                                    "example": "Av. Exemplo"
+                                                },
+                                                "number": {
+                                                    "type": "string",
+                                                    "example": "78, ap: 101"
+                                                },
+                                                "neighborhood": {
+                                                    "type": "string",
+                                                    "example": "Bairro"
+                                                },
+                                                "city": {
+                                                    "type": "string",
+                                                    "example": "Cidade"
+                                                },
+                                                "created_at": {
+                                                    "type": "Date",
+                                                    "example": "2021-11-28T18:17:37.000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "Date",
+                                                    "example": "2021-11-28T18:17:37.000Z"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Deleta um endereço do usuário",
+                "description": "Essa rota é responsável por deletar um endereço do usuário",
+                "tags": ["Addresses"],
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    {
+                        "name": "addressId",
+                        "in": "path",
+                        "description": "ID do endereço que deseja deletar",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "500": {
+                        "description": "Unexpected Error"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "User": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Address": {
+                "type": "object",
+                "properties": {
+                    "address": {
+                        "type": "string"
+                    },
+                    "number": {
+                        "type": "string"
+                    },
+                    "neighborhood": {
+                        "type": "string"
+                    },
+                    "city": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}
