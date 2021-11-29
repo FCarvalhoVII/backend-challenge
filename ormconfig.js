@@ -23,8 +23,8 @@ module.exports = {
     "migrationsRun": NODE_ENV === "test",
     "dropSchema": NODE_ENV === "test",
     "synchronize": false,
-    "migrations": ["src/database/migrations/*.ts"],
-    "entities": ["src/entities/*.ts"],
+    "migrations": [NODE_ENV ? "src/database/migrations/*.ts" : "dist/src/database/migrations/*.js"],
+    "entities": [NODE_ENV ? "src/entities/*.ts" : "dist/src/entities/*.js"],
     "cli": {
         "migrationsDir": "src/database/migrations"
     },
