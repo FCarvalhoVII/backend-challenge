@@ -14,6 +14,6 @@ export default class ListUserDataService {
             select: ['name', 'email', 'address']
         });
 
-        return userData;
+        return userData[0];
     }
 }
